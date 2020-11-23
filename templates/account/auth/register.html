@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-4 px-4">
+    <div class="col-lg-5 col-md-6 col-sm-7  shadow rounded  p-4 bg-white">
+        <form action="{% url 'register' %}" method="POST">
+            {% csrf_token %}
+            <div class="text-center border-bottom py-2">
+                <h3>Zarejestruj się </h3>
+            </div>
+            <div class="form-group mt-4">
+                <input type="text" class="form-control" name='username' id="username" placeholder="username" value="">
+                <div class="">
+                    {{form.username.errors}}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="email" name='email' class="form-control" id="emailId" aria-describedby="emailHelp"
+                       placeholder="email">
+                {{form.email.errors}}
+            </div>
+
+            <div class="border-bottom p-2">
+                <h6>Typ konta</h6>
+            </div>
+            <div class="form-check my-2">
+                <input class="form-check-input" type="radio" name="is_creator" id="is_creator" value="True"
+                       checked>
+                <label class="form-check-label" for="is_creator">
+                    Tworzenie ankiet
+                </label>
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="radio" name="is_creator" id="exampleRadios2" value="False">
+                <label class="form-check-label" for="exampleRadios2">
+                    Wypełnianie ankiet
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="password" name='password' class="form-control" id="password1" placeholder="hasło">
+                {{form.password.errors}}
+            </div>
+
+            <div class="form-group">
+                <input type="password" name='confirm_password' class="form-control" id="confirm_password"
+                       placeholder="powtórz hasło">
+                {{form.confirm_password.errors}}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Zarejestruj się</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

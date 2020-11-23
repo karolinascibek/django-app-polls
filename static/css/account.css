@@ -1,0 +1,8 @@
+.errorlist{
+    list-style-type:none;
+    color:red;
+	padding-top:1px;
+	font-size:0.7rem;
+	margin:0;
+	text-align:left;
+}

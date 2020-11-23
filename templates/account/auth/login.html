@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!--<div>-->
+<!--    <form action="{% url 'login' %}" method="POST">-->
+<!--        {% csrf_token %}-->
+<!--        <input type="email" name="email" placeholder="email">-->
+<!--        <input type="text" name="password" placeholder="hasło">-->
+<!--        <input type="submit" value="Submit">-->
+<!--    </form>-->
+<!--</div>-->
+<div class="row justify-content-center mt-4 px-4">
+    <div class="col-lg-5 col-md-6 col-sm-7 shadow rounded  p-4 bg-white">
+        <div class="border-bottom py-2 mb-4">
+            <h4> Zaloguj się</h4>
+        </div>
+        <!--the message will be set when login  fails-->
+        {% if falied %}
+        <div class="alert alert-warning">
+            {{falied}}
+        </div>
+        {% endif %}
+
+        <!--the message will be set when registration is successful-->
+        {% if success %}
+        <div class="alert alert-warning">
+            {{success}}
+        </div>
+        {% endif %}
+
+        <form action="{% url 'login' %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <input class="form-control" id="inputEmail1" type="text" name="email" placeholder="email"
+                       aria-describedby="emailHelp">
+                {{form.email.errors}}
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" placeholder="hasło" class="form-control" id="inputPassword1">
+                {{form.password.errors}}
+            </div>
+            <button type="submit" class="btn btn-primary">Zaloguj się</button>
+        </form>
+        <div class="pt-2 ">
+            <p> Nie masz konta? <a href="{% url 'register' %}">Zarejestruj się</a></p>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

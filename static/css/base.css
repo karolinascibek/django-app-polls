@@ -1,0 +1,19 @@
+html, body{
+    height:100%;
+}
+
+#page{
+    min-height:100%;
+    margin:0;
+    padding:0;
+    background:blue;
+}
+
+.errorlist{
+    list-style-type:none;
+    color:red;
+	padding-top:1px;
+	font-size:0.7rem;
+	margin:0;
+	text-align:left;
+}
