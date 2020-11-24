@@ -29,6 +29,7 @@ urlpatterns = [
     path('u/', account_views.profile_view, name='profile'),
     path('<str:username>/password-chnage', account_views.detail_profile_view, name='detail_profile'),
     path('<str:username>/', account_views.detail_profile_view, name='detail_profile'),
+    path('u/update', account_views.user_update_view, name='user_update'),
 ]
 
 

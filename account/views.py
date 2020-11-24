@@ -2,6 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from mysite.settings import LOGIN_REDIRECT_URL, LOGIN_URL
 
+import json
+from django.http import JsonResponse
+
+from .forms import UserUpdateForm
+
 
 # Create your views here.
 
@@ -21,6 +26,19 @@ def profile_view(request):
 @login_required(login_url=LOGIN_URL)
 def detail_profile_view(request, username):
     return render(request, 'account/detail_profile.html', {})
+
+
+def user_update_view(request):
+    form = UserUpdateForm()
+    if request.method == "POST":
+        data = json.loads(request.body)
+        form = UserUpdateForm(data)
+        if form.is_valid():
+            print(form.data)
+            return JsonResponse({'success': 'Nazwa została zmieniona.'})
+        else:
+            print(form.data)
+    return JsonResponse({"error": 'To pole nie może być puste.'}, status=400)
 
 
 @login_required(login_url=LOGIN_URL)
