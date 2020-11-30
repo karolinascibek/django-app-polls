@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from mysite.settings import LOGIN_REDIRECT_URL, LOGIN_URL
-from django.contrib.auth.hashers import make_password
 
 # Create your views here.
 
@@ -16,8 +15,7 @@ def register_view(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            context = {'success': 'Rejestracja się udała.'}
-            return render(request, 'account/auth/login.html', context)
+            return redirect('login')
     return render(request, 'account/auth/register.html', {'form': form})
 
 

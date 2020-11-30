@@ -1,38 +1,38 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row justify-content-center mt-4">
-    <div class="col-lg-7 p-2 col-md-6 col-xs-5">
-        <h5> Użytkownik / {{request.user.email}}</h5>
-    </div>
-</div>
-<div class="row justify-content-center pt-2 pb-4">
-    <div class="col-lg-7 col-md-6 col-xs-5 py-3 mt-4 border rounded-left bg-white">
-        <div class="row py-3">
-            <div class="col-lg-12  ">
-                {% block update %}
-                {% include "account/detail_profile/update.html" %}
-                {% endblock %}
-            </div>
-        </div>
-        <!--update form-->
-        <div class="row border-top py-3">
-            <div class="col-lg-12 p-3   ">
-                {% block password_change %}
-                {% include "account/detail_profile/password_change.html" %}
-                {% endblock %}
-            </div>
-        </div>
-        <div class="row border-top">
-            <!--delete form-->
-            <div class="col-lg-12 p-3  ">
-                {% block delete %}
-                {% include "account/detail_profile/delete.html" %}
-                {% endblock %}
-            </div>
-        </div>
+<div class="row h-100 justify-content-center">
 
+     <!--left nav-->
+    <div class="d-none d-lg-block col-2  bg-dark py-4 shadow-sm">
+        <nav class="nav flex-column">
+           <a class="nav-link my-link" href="{% url 'update_profile' %}">Profil</a>
+           <a class="nav-link" href="{% url 'password_change' %}">Hasło</a>
+           <a class="nav-link" href="{% url 'delete_profile' %}">Usuń</a>
+        </nav>
+     </div>
+
+    <!--    settings profile-->
+    <div class="col-10 ">
+        <div class="row justify-content-center mt-4">
+            <div class="col-lg-7 p-2 col-md-6 col-xs-5">
+                <h5> Użytkownik / {{request.user.email}}</h5>
+            </div>
+        </div>
+        <!--form-->
+        <div class="row justify-content-center pt-2 pb-4 px-1">
+            <div class="col-lg-8 col-md-8 col-xs-8 py-3 mt-4 border rounded-left bg-white">
+
+                <div class="row border-top py-3">
+                    <div class="col-lg-12 p-3   ">
+                        {% block profile %}
+
+                        {% endblock %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-</div>
 </div>
 {% endblock %}

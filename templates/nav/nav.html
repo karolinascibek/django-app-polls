@@ -10,8 +10,9 @@
             <a class="nav-link text-dark" href="{% url 'register' %}">Zarejestruj się</a>
             <a class="nav-link active text-success" href="{% url 'login' %}">Zaloguj się <span class="sr-only">(current)</span></a>
             {% else %}
-            <a href="{% url 'detail_profile' request.user.username|slugify  %}" class="nav-link"> <i class="fas fa-user-circle"></i> {{request.user.username}} </a>
-            <a href="{% url 'logout' %}" class="nav-link "> logout </a>
+<!--request.user.username|slugify-->
+            <a href="{% url 'update_profile'   %}" class="nav-link"> <i class="fas fa-user-circle"></i> {{request.user.username}} </a>
+            <a href="{% url 'logout' %}" class="nav-link "> wyloguj </a>
             {% endif %}
         </div>
     </div>

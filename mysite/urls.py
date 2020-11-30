@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from account import views as account_views
 from account.auth import views as auth_views
+from polls.questionnaire import views as polls_questionary_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,10 +27,13 @@ urlpatterns = [
     path('login/', auth_views.login_view, name='login'),
     path('logout/', auth_views.logout_view, name='logout'),
 
-    path('u/', account_views.profile_view, name='profile'),
-    path('<str:username>/password-chnage', account_views.detail_profile_view, name='detail_profile'),
-    path('<str:username>/', account_views.detail_profile_view, name='detail_profile'),
-    path('u/update', account_views.user_update_view, name='user_update'),
+    #path('user/', account_views.profile_view, name='profile'),
+    path('u/', account_views.update_profile_view, name='update_profile'),
+    path('u/password-change', account_views.password_change_view, name='password_change'),
+    path('u/delete', account_views.delete_profile_view, name='delete_profile'),
+
+    path('u/questionnaire', polls_questionary_view.questionnaire_create_view, name='create_questionnaire'),
+    path('u/questionnaire/<int:id>', polls_questionary_view.questionnaire_detail_view, name='detail_questionnaire'),
 ]
 
 

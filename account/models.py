@@ -48,7 +48,7 @@ class MyUser(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
     is_creator = models.BooleanField()
     created_at = models.DateTimeField(default=timezone.now)
-    updated_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

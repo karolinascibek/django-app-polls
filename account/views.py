@@ -1,11 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from mysite.settings import LOGIN_REDIRECT_URL, LOGIN_URL
+from django.contrib.auth import update_session_auth_hash, logout
 
-import json
-from django.http import JsonResponse
+from .forms import UserUpdateForm, UserPasswordChangeForm
+from .models import MyUser
 
-from .forms import UserUpdateForm
+from django.shortcuts import render, redirect, get_list_or_404
+from polls.questionnaire.models import Questionnaire
 
 
 # Create your views here.
@@ -13,7 +15,8 @@ from .forms import UserUpdateForm
 
 def index(request):
     if request.user.is_authenticated:
-        return render(request, 'account/dashboard.html')
+        questionnaires = get_list_or_404(Questionnaire, creator=request.user)
+        return render(request, 'account/dashboard.html', {'questionnaires': questionnaires})
     return render(request, 'base.html')
 
 
@@ -24,29 +27,40 @@ def profile_view(request):
 
 
 @login_required(login_url=LOGIN_URL)
-def detail_profile_view(request, username):
-    return render(request, 'account/detail_profile.html', {})
-
-
-def user_update_view(request):
+def update_profile_view(request):
     form = UserUpdateForm()
     if request.method == "POST":
-        data = json.loads(request.body)
-        form = UserUpdateForm(data)
+        instance = get_object_or_404(MyUser, id=request.user.id)
+        form = UserUpdateForm(request.POST, instance=instance)
         if form.is_valid():
-            print(form.data)
-            return JsonResponse({'success': 'Nazwa została zmieniona.'})
-        else:
-            print(form.data)
-    return JsonResponse({"error": 'To pole nie może być puste.'}, status=400)
+            form.save()
+            return render(request, 'account/detail_profile/update.html', {'success': "Nazwa została zmieniona"})
+    return render(request, 'account/detail_profile/update.html', {'form': form})
 
 
 @login_required(login_url=LOGIN_URL)
-def password_change_view(request, username):
+def delete_profile_view(request):
     if request.method == "POST":
-        print("zmiana chasła POST ............................. ")
-        print(request.user.id)
-    return render(request, 'account/detail_profile.html', {})
+        user = request.user
+        user.delete()
+        logout(request)
+        return redirect('register')
+    return render(request, 'account/detail_profile/delete.html', {})
+
+
+@login_required(login_url=LOGIN_URL)
+def password_change_view(request):
+    form = UserPasswordChangeForm(request.user)
+    if request.method == 'POST':
+        instance = get_object_or_404(MyUser, id=request.user.id)
+        form = UserPasswordChangeForm(instance, data=request.POST)
+        if form.is_valid():
+            form.save()
+            print("przeszło walidacje, zapisano zmiany")
+            update_session_auth_hash(request, form.user)
+            return redirect('password_change')
+    return render(request, 'account/detail_profile/password_change.html', {'form': form})
+
 
 
 

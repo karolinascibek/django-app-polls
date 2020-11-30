@@ -1,4 +1,7 @@
-<form class=" ">
+{% extends 'account/detail_profile.html' %}
+{% block profile %}
+<form id="app-delete" action="{% url 'delete_profile' %}" method="POST" v-on:submit.prevent='deleteAccount'>
+    {% csrf_token %}
     <div class=" ">
         <div class="form-group">
             <input type="hidden" class="form-control" id="inputNewConfirmPassword">
@@ -6,7 +9,33 @@
     </div>
     <div class="">
         <div class="form-group ">
-            <button type="submit" class="btn btn-danger">Usuń konto</button>
+            <button class="btn btn-danger" >Usuń konto</button>
         </div>
     </div>
+      [[ message ]]
 </form>
+
+
+{% block script %}
+<script>
+    var appDelete = new Vue({
+        el: '#app-delete',
+        delimiters:['[[',']]'],
+        data:{
+            message:'',
+            isYes:false,
+        },
+        methods: {
+            deleteAccount:function(e){
+                this.isYes = confirm("Czy na pewno chcesz usunąć konto?")
+                console.log(this.isYes)
+                if( this.isYes ){
+                    this.$el.submit()
+                }
+                
+            }
+        },
+    })
+</script>
+{% endblock %}
+{% endblock %}
