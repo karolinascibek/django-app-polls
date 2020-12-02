@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     # My apps
     'account',
     'polls.questionnaire',
+    'polls.question',
+    'polls.choice',
 ]
 
 MIDDLEWARE = [

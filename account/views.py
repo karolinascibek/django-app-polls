@@ -15,7 +15,7 @@ from polls.questionnaire.models import Questionnaire
 
 def index(request):
     if request.user.is_authenticated:
-        questionnaires = get_list_or_404(Questionnaire, creator=request.user)
+        questionnaires = Questionnaire.objects.filter(creator=request.user)
         return render(request, 'account/dashboard.html', {'questionnaires': questionnaires})
     return render(request, 'base.html')
 

@@ -12,6 +12,7 @@
         <a class='btn btn-primary' href='{% url "create_questionnaire" %}'> Nowa </a>
     </div>
 </div>
+{% if questionnaires %}
 <div class="row justify-content-center my-3">
     <div class="col-6 bg-white p-3 rounded shadow">
         <div class="p-2 text-success">
@@ -35,6 +36,13 @@
         </table>
     </div>
 </div>
+{% else %}
+<div class="row justify-content-center">
+    <div class="col-6">
+        Nie stworzono żadnej ankiety
+    </div>
+</div>
+{% endif %}
 
 
 {% endblock %}

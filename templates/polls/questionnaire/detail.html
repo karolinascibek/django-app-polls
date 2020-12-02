@@ -11,7 +11,21 @@
 </div>
 <div class="row justify-content-center">
     <div class="col-6">
-        <button class="btn btn-primary">Dodaj pytanie</button>
+        <a class="btn btn-primary" href="{% url 'create_question' id=questionnaire.id %}" >Dodaj pytanie</a>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-6">
+        {% for question in questions %}
+        <div class='py-3 border-bottom border-dark'>
+            <h3>{{question.contents}}</h3>
+            <ul>
+            {% for choice in question.choice_set.all %}
+             <li>{{choice.contents}}</li>               
+            {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
     </div>
 </div>
 

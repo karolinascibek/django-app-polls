@@ -18,6 +18,7 @@ from django.urls import path
 from account import views as account_views
 from account.auth import views as auth_views
 from polls.questionnaire import views as polls_questionary_view
+from polls.question import views as polls_question_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,6 +35,7 @@ urlpatterns = [
 
     path('u/questionnaire', polls_questionary_view.questionnaire_create_view, name='create_questionnaire'),
     path('u/questionnaire/<int:id>', polls_questionary_view.questionnaire_detail_view, name='detail_questionnaire'),
+    path('u/questionnaire/<int:id>/question', polls_question_view.question_create_view, name='create_question'),
 ]
 
 
