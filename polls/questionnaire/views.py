@@ -7,11 +7,15 @@ from django.db.models import Prefetch
 from .forms import QuestionnaireForm
 
 from polls.choice.models import Choice
-from polls.question.models import CloseQuestion, OpenQuestion
+from polls.question.models import Question
+
+from django.contrib.auth.decorators import login_required
+from mysite.settings import LOGIN_REDIRECT_URL, LOGIN_URL
 
 # Create your views here.
 
 
+@login_required(login_url=LOGIN_URL)
 def questionnaire_create_view(request):
     if request.method == "POST":
         data = {
@@ -21,19 +25,15 @@ def questionnaire_create_view(request):
         form = QuestionnaireForm(data)
         if form.is_valid():
             new_quest = form.save()
-            print(new_quest)
+            # print(new_quest)
             return redirect('detail_questionnaire', id=new_quest.id)
     return render(request, 'polls/questionnaire/create.html')
 
 
+@login_required(login_url=LOGIN_URL)
 def questionnaire_detail_view(request, id):
     questionnaire = get_object_or_404(Questionnaire, id=id)
-    close_questions = CloseQuestion.objects.filter(questionnaire__id=id)
-    open_questions = OpenQuestion.objects.filter(questionnaire__id=id)
-    questions = sorted(
-        chain(close_questions, open_questions),
-        key=attrgetter('created_at'))
-    print(questions)
+    questions = Question.objects.filter(questionnaire__id=id)
     context = {
         'questionnaire': questionnaire,
         'questions': questions

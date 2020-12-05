@@ -19,6 +19,8 @@ from account import views as account_views
 from account.auth import views as auth_views
 from polls.questionnaire import views as polls_questionary_view
 from polls.question import views as polls_question_view
+from polls.question import api as polls_question_api
+from polls.choice import api as polls_choice_api
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,7 +37,20 @@ urlpatterns = [
 
     path('u/questionnaire', polls_questionary_view.questionnaire_create_view, name='create_questionnaire'),
     path('u/questionnaire/<int:id>', polls_questionary_view.questionnaire_detail_view, name='detail_questionnaire'),
-    path('u/questionnaire/<int:id>/question', polls_question_view.question_create_view, name='create_question'),
+    path('u/questionnaire/<int:id>/new', polls_question_view.question_create_view, name='create_question'),
+    path('u/questionnaire/<int:id>/close-question/<int:id_question>', polls_question_view.close_question_update_view,
+          name='update_close_question'),
+    # path('u/questionnaire/<int:id>/open-question/<int:id_question>', polls_question_view.open_question_update_view,
+    #      name='update_open_question'),
+
+    # API
+    path('close-question/<int:id_question>', polls_question_api.question_detail, name='close_question_api'),
+    path('close-question/<int:id_question>/update', polls_question_api.question_update, name='close_question_update_api'),
+    # path('close-question/<int:id_question>/delete', polls_question_api.close_question_delete_api, name='close_question_delete_api'),
+    path('choice/delete', polls_choice_api.choice_delete_api, name='choice_delete_api'),
+    # # path('close-question/<int:id_question>/choice/create', polls_choice_api.choice_create_api, name='choice_create_api'),
+    # # path('close-question/<int:id_question>/choice/update', polls_choice_api.choice_update_api, name='choice_update_api'),
+
 ]
 
 

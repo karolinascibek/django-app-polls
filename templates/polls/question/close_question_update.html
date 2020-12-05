@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id='app-update-close-question' class="row justify-content-center mt-4">
+    <div class="col-6">
+        <form @submit.prevent="questionUpdate" class='bg-white p-3 rounded shadow' >   
+            <div class="col-12">
+                <div v-if="message"class='alert-success rounded p-2 mb-1'>
+                    [[message]]
+                </div>
+                <div class="form-group ">
+                    <input type="text" placeholder="Treść pytania" class="form-control" name="contents-question"  v-model="question.contents">
+                </div>
+            </div>
+            <!--Choices field -->
+            <div  class='m-3 col-12'>
+                <div class="form-group ">
+                    <input type="number" placeholder="maksymalna liczba wyborów" class="form-control" name="number_of_choices" v-model='question.number_of_choices'>
+                </div>
+                <div class='btn btn-success py-2' v-on:click="addNewChoice">Dodaj opcje</div>
+                <!-- old choices -->
+                <div v-for=" (choice,index) in choices" v-bind:key="choice.id" >
+                    <div class='d-flex py-1'>
+                        <input type="text" class='form-control' v-model="choice.contents" >
+                        <i class="fas fa-times p-2 text-danger"v-on:click="oldChoiceDelete(choice.id)" ></i>
+                    </div>
+                </div>
+                <!-- new choices -->
+                <div v-for="(new_choice,index) in new_choices" v-bind:key="index" >
+                    <div class='d-flex py-1'>
+                        <input type="text" class='form-control'  v-model="new_choice.contents" :placeholder="'opcja'+' '+index+': '+new_choice.counter" :name='"contents-"+new_choice.counter' >
+                        <i class="fas fa-times p-2 text-danger" v-on:click="deleteNewChoice(new_choice.counter)" ></i>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" class='btn btn-primary' value="Zapisz">
+        </form>
+    </div>
+</div>
+
+{% block script %}
+<script>
+    function sendRequest(url,method,data){
+        let r  = axios({
+            method: method,
+            url: url,
+            data: data,
+            headers: {
+                'X-CSRFToken' : '{{csrf_token}}',
+                'Content-Type' : 'application/json'
+            }
+        })
+        return r;
+    }
+    var appDelete = new Vue({
+        el: '#app-update-close-question',
+        delimiters:['[[',']]'],
+        data:{
+            choices: [],
+            question: [],
+            new_choices: [],
+            counter: 0,
+            message:'',
+        },
+        methods: {
+            addNewChoice(){
+                const new_choice = { 'counter': this.counter, 'contents':'', 'question':this.question}
+                this.new_choices.push(new_choice);
+                this.counter++;
+            },
+
+            deleteNewChoice(new_choice){ 
+                for(let [i,new_ch] of this.new_choices.entries())
+                {
+                    if(new_ch.counter === new_choice){
+                        this.new_choices.splice(i, 1);
+                        break;
+                    }
+                }
+            },        
+            questionUpdate(){
+                data = {'update_choices': this.choices , 'new_choices':this.new_choices, 'question':this.question}
+                let hello = async () => {
+                    let isSend = await sendRequest("{% url 'close_question_update_api' id_question=question.id %}",'POST', data)
+                    .then(response =>{
+                        console.log("dane poszły")
+                        return true
+                    })
+                    .catch( err =>{
+                        console.log("cos poszło nie tak")
+                        return false
+                    })    
+                    if(isSend){
+                        window.location= "{% url 'detail_questionnaire' id=questionnaire_id %}";
+                    } 
+                    else{
+                        this.message = 'Coś poszło nie tak :('
+                    }
+                } 
+                hello()
+            },
+            oldChoiceDelete(id_choice){
+                sendRequest("{% url 'choice_delete_api' %}",'POST',{'id': id_choice})
+                .then(response =>{
+                    for(let [i,ch] of this.choices.entries())
+                    {
+                        if(ch.id === id_choice){
+                            this.choices.splice(i, 1);
+                            break;
+                        }
+                    }
+                })
+                .catch( err =>{
+                    console.log("cos poszło nie tak")
+                })   
+            }
+        },
+        mounted () {
+            axios
+            .get('{% url "close_question_api" id_question=question.id %}')
+            .then(response => {
+                this.question = response.data.data.question;
+                this.choices = response.data.data.choices;
+            })
+        }
+    })
+</script>
+
+{% endblock %}
+{% endblock %}

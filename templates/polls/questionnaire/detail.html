@@ -2,31 +2,88 @@
 {% load humanize %}
 
 {% block content %}
-
+<div id='app-questionnaire'>
 <div class="row justify-content-center my-4">
     <div class="col-6">
         <h3>{{questionnaire.name}}</h3>
         <p>{{questionnaire.updated_at|naturaltime}}</p>
     </div>
 </div>
-<div class="row justify-content-center">
+<div class="row justify-content-center mb-2">
     <div class="col-6">
-        <a class="btn btn-primary" href="{% url 'create_question' id=questionnaire.id %}" >Dodaj pytanie</a>
+        <a class="btn btn-primary" href="{% url 'create_question' id=questionnaire.id %}">Dodaj pytanie</a>
     </div>
 </div>
 <div class="row justify-content-center">
     <div class="col-6">
-        {% for question in questions %}
-        <div class='py-3 border-bottom border-dark'>
-            <h3>{{question.contents}}</h3>
-            <ul>
-            {% for choice in question.choice_set.all %}
-             <li>{{choice.contents}}</li>               
+        <div class="row justify-content-center">
+            {% for question in questions %}
+            <div class="col-12 bg-white rounded shadow p-2 mb-1">
+                <!-- delete update button-->
+                <div class="text-right">
+                    {% if question.number_of_choices%}
+                    <a href="{% url 'update_close_question' id=questionnaire.id id_question=question.id %}"
+                       class="btn p-0 m-0 "><i class="fas fa-edit text-success border rounded p-2"></i></a>
+                    <i class="fas fa-times p-2 text-danger border rounded" v-on:click="deleteCloseQuestion"></i>
+                    {% else %}
+                    <a href="{% url 'update_close_question' id=questionnaire.id id_question=question.id %}"
+                       class="btn p-0 m-0 "><i class="fas fa-edit text-success border rounded p-2"></i></a>
+                    <i class="fas fa-times p-2 text-danger border rounded " v-on:click="deleteOpenQuestion"></i>
+                    {%endif%}
+                </div>
+                <!--display question and its choices if are closed questions-->
+                <div class="px-3">
+                    <div class="">
+                         <h4>{{question.contents}}</h4>
+                    </div>
+                    <ul>
+                        {% for choice in question.choice_set.all %}
+                        <li>{{choice.contents}}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
             {% endfor %}
-            </ul>
         </div>
-        {% endfor %}
     </div>
+</div>
+[[message]]
 </div>
 
+{% block script %}
+<script>
+    function sendRequest(url,method,data){
+        let r  = axios({
+            method: method,
+            url: url,
+            data: data,
+            headers: {
+                'X-CSRFToken' : '{{csrf_token}}',
+                'Content-Type' : 'application/json'
+            }
+        })
+        return r;
+    }
+
+    var app = new Vue({
+        el: '#app-questionnaire',
+        delimiters: ['[[', ']]'],
+        data() {
+            return{
+                message: 'Hellow Vue',
+            }
+        },
+        methods: {
+            deleteCloseQuestion(){
+                console.log('close')
+            },
+            deleteOpenQuestion(){
+                console.log('open')
+            }
+        }
+    })
+
+</script>
+
+{% endblock  %}
 {% endblock %}
