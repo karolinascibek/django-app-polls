@@ -11,7 +11,8 @@
             <div class="col-md-6 mb-3">
                 <label for="validationTooltip04">typ pytania</label>
                 <select class="custom-select" id="validationTooltip04" name='type' v-model="selected" required>
-                    <option value="choices">pytanie zamknięte</option>
+                    <option value="single-choice">jednokrotnego wyboru</option>
+                    <option value="multiple-choice">wielokrotnego wyboru</option>
                     <option value="text">text</option>
                     <option value="number">liczba</option>
                 </select>
@@ -20,9 +21,9 @@
                 </div>
             </div>
             <!--Choices field -->
-            <div v-if="selected == 'choices'" class='m-3 col-12'>
-                <div class="form-group ">
-                    <input type="number" placeholder="maksymalna liczba wyborów" class="form-control" name="number_of_choices" value=1>
+            <div  v-if="selected === 'single-choice' || selected === 'multiple-choice'" class='m-3 col-12'>
+                <div v-if="selected === 'multiple-choice'" class="form-group ">
+                    <input type="number" class="form-control" name="number_of_choices" v-model='numberChoices'>
                 </div>
                 <div class='btn btn-success py-2' v-on:click="addChoice">Dodaj opcje</div>
                 <div v-for="(choice, index) in choices" v-bind:key="choice">
@@ -46,6 +47,7 @@
             selected:'',
             counter: 0,
             choices: [],
+            numberChoices: 1,
         },
         methods: {
             addChoice(){

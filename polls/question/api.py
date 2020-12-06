@@ -23,7 +23,7 @@ def question_detail(request, id_question):
         'question': model_to_dict(question),
         'choices': choices,
     }
-    print(data)
+    # print(data)
     return JsonResponse({'data': data})
 
 
@@ -45,6 +45,7 @@ def question_update(request, id_question):
         new_question = data['question']
         question.contents = new_question['contents']
         question.type = new_question['type']
+        question.number_of_choices = new_question['number_of_choices']
         question.save()
     return JsonResponse({"success": 'Zmiany zostały zapisane.'}, status=200)
 

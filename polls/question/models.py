@@ -9,6 +9,7 @@ class Question(models.Model):
     questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE)
     contents = models.CharField(max_length=500)
     type = models.CharField(max_length=30)
+    number_of_choices = models.IntegerField(default=1)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 

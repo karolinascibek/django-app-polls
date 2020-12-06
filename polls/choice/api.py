@@ -32,6 +32,8 @@ from polls.choice.models import Choice
 # #     return JsonResponse({"success": 'Zmiany zostały zapisane.'})
 #
 #
+
+
 @login_required(login_url=LOGIN_URL)
 def choice_delete_api(request):
     data = json.loads(request.body)

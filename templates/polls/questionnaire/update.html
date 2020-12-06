@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    update questionaire
+    <div class="col-6">
+        <form action="{% url 'update_questionnaire' id=questionnaire.id%}" method="POST" class="bg-white p-3 rounded">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text"  class="form-control" name="name" value="{{questionnaire.name}}">
+            </div>
+            <input type="submit" class='btn btn-primary' value="Zapisz">
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

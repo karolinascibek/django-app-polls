@@ -36,6 +36,26 @@ def questionnaire_detail_view(request, id):
     questions = Question.objects.filter(questionnaire__id=id)
     context = {
         'questionnaire': questionnaire,
-        'questions': questions
+        'questions': questions,
+        'id': id,
     }
     return render(request, 'polls/questionnaire/detail.html', context)
+
+
+@login_required(login_url=LOGIN_URL)
+def questionnaire_delete_view(request, id):
+    if request.method == 'POST':
+        questionnaire = get_object_or_404(Questionnaire, id=id)
+        questionnaire.delete()
+        return redirect('index')
+    return redirect('detail_questionnaire', id=id)
+
+
+@login_required(login_url=LOGIN_URL)
+def questionnaire_update_view(request, id):
+    questionnaire = get_object_or_404(Questionnaire, id=id)
+    if request.method == 'POST':
+        questionnaire.name = request.POST['name']
+        questionnaire.save()
+        return redirect('detail_questionnaire', id=id)
+    return render(request, 'polls/questionnaire/update.html', {'questionnaire': questionnaire})
