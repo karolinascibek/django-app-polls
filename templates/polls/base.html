@@ -2,8 +2,9 @@
 
 {% block content %}
 <nav class="nav justify-content-center my-3">
+    <a class="nav-link  py-2 px-3" href="{% url 'index' %}">Moje ankiety</a>
     <a class="nav-link  py-2 px-3" href="{% url 'detail_questionnaire' id=questionnaire.id %}">Tworzenie</a>
-    <a class="nav-link  py-2 px-3" href="#">Udostępnianie</a>
+    <a class="nav-link  py-2 px-3" href="{% url 'share_questionnaire' id=questionnaire.id %}">Udostępnianie</a>
     <a class="nav-link  py-2 px-3" href="#">Analiza</a>
 </nav>
 

@@ -2,18 +2,18 @@
 {% load humanize %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-6 ">
-        <h1>{{request.user.email}}</h1>
-    </div>
-</div>
-<div class="row justify-content-center my-4">
-    <div class="col-6 border-top border-bottom py-3 text-right ">
-        <a class='btn btn-primary' href='{% url "create_questionnaire" %}'> Nowa </a>
+<div class="row justify-content-center mt-3">
+    <div class="col-6 p-0 m-0">
+        <div class="jumbotron p-4">
+            <div class='text-right d-flex justify-content-between'>
+                <h6 >Stwórz nową ankiete</h6>
+                <a class='btn btn-outline-primary ml-2' href='{% url "create_questionnaire" %}'> Nowa </a>
+            </div>
+        </div>
     </div>
 </div>
 {% if questionnaires %}
-<div class="row justify-content-center my-3">
+<div class="row justify-content-center">
     <div class="col-6 bg-white p-3 rounded shadow">
         <div class="p-2 text-success">
             <h4>Moje ankiety</h4>

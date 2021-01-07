@@ -19,9 +19,9 @@ from account import views as account_views
 from account.auth import views as auth_views
 from polls.questionnaire import views as polls_questionnaire_view
 from polls.questionnaire import api as polls_questionnaire_api
-from polls.question import views as polls_question_view
-from polls.question import api as polls_question_api
-from polls.choice import api as polls_choice_api
+from polls.questionnaire.question import views as polls_question_view, api as polls_question_api
+from polls.questionnaire.choice import api as polls_choice_api
+from polls.respondents.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -40,6 +40,8 @@ urlpatterns = [
     path('questionnaire/<int:id>', polls_questionnaire_view.questionnaire_detail_view, name='detail_questionnaire'),
     path('questionnaire/<int:id>/update', polls_questionnaire_view.questionnaire_update_view, name='update_questionnaire'),
     path('questionnaire/<int:id>/delete', polls_questionnaire_view.questionnaire_delete_view, name='delete_questionnaire'),
+    path('questionnaire/<int:id>/share',   polls_questionnaire_view.questionnaire_share_view, name='share_questionnaire'),
+    path('<str:questionnaire_code>',   polls_questionnaire_view.questionnaire_display_view, name='display_questionnaire'),
 
     path('questionnaire/<int:id>/new',        polls_question_view.question_create_view, name='create_question'),
     path('question/<int:id_question>/update', polls_question_view.question_update_view, name='update_question'),
@@ -47,8 +49,12 @@ urlpatterns = [
     # path('u/questionnaire/<int:id>/open-question/<int:id_question>', polls_question_view.open_question_update_view,
     #      name='update_open_question'),
 
+    # respondents view
+    path('respondent/questionnaires', respondent_questionnaires, name='respondent_questionnaires'),
+    path('respondent/<id_questionnaire>', respondent_questionnaire, name='respondent_questionnaire'),
+
     # API
-    #path('api/questionnaire/<int:id>',  polls_questionnaire_api.detail_questionnaire, name='detail_questionnaire_api'),
+    path('api/questionnaire/<int:id>',  polls_questionnaire_api.detail_questionnaire, name='detail_questionnaire_api'),
     path('api/question/<int:id_question>',        polls_question_api.question_detail, name='detail_question_api'),
     path('api/question/<int:id_question>/update', polls_question_api.question_update, name='update_question_api'),
     # path('close-question/<int:id_question>/delete', polls_question_api.close_question_delete_api, name='close_question_delete_api'),

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-6 ">
+        <h1>{{request.user.email}}</h1>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-7">
+    <table class="table">
+        <caption>List ankiet</caption>
+        <thead>
+          <tr>
+            <th scope="col">Wypełnione ankiety</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for q in questionnaires %}
+            <tr>
+                <td> <a href="{% url 'respondent_questionnaire' id_questionnaire=q.id %}">{{q.name}}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+</div>
+</div>
+
+{% endblock %}

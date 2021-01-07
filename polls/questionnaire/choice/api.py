@@ -1,12 +1,11 @@
-from django.shortcuts import render, redirect
-from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
-from mysite.settings import LOGIN_REDIRECT_URL, LOGIN_URL
+from mysite.settings import LOGIN_URL
 
 import json
 from django.http import JsonResponse
 
-from polls.choice.models import Choice
+from polls.questionnaire.choice.models import Choice
 # Create your views here.
 
 #

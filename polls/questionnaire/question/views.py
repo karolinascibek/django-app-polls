@@ -1,29 +1,21 @@
-from django.shortcuts import render, redirect
-from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
-from django.forms.models import model_to_dict
-
-import json
-from django.http import JsonResponse
-from django.utils.safestring import SafeString
+from django.shortcuts import render, redirect, get_object_or_404
 
 from django.contrib.auth.decorators import login_required
-from mysite.settings import LOGIN_REDIRECT_URL, LOGIN_URL
+from mysite.settings import LOGIN_URL
 
-from polls.choice.forms import ChoiceCreateForm
-from polls.question.forms import QuestionCreateForm
 from polls.questionnaire.models import Questionnaire
-from polls.question.models import Question
-from polls.choice.models import Choice
+from polls.questionnaire.question.models import Question
+from polls.questionnaire.choice.models import Choice
 
 # Create your views here.
 
 
 @login_required(login_url=LOGIN_URL)
 def question_create_view(request, id):
+    questionnaire = Questionnaire.objects.get(id=id)
     if request.method == "POST":
         contents = request.POST.get('contents-question')
-        questionnaire = Questionnaire.objects.get(id=id)
-        number_of_choices = 1;
+        number_of_choices = 1
         if request.POST['type'] == 'multiple-choice':
             number_of_choices = int(request.POST['number_of_choices'])
         question = Question(contents=contents, questionnaire=questionnaire, type=request.POST['type'], number_of_choices=number_of_choices )
@@ -33,14 +25,17 @@ def question_create_view(request, id):
                 [Choice(contents=choice, question=question) for choice in request.POST.getlist('contents-choice')]
             )
         return redirect('detail_questionnaire', id=id)
-    return render(request, 'polls/question/create.html', {'questionnaire_id': id})
+    return render(request, 'polls/question/create.html', {'questionnaire': questionnaire})
 
 
 @login_required(login_url=LOGIN_URL)
 def question_update_view(request, id_question):
     question = get_object_or_404(Question, id=id_question)
+    questionnaire = get_object_or_404(Questionnaire, id=question.questionnaire.id)
+    print("questionnaire --- ")
+    print(questionnaire)
     context = {
-        'questionnaire_id': question.questionnaire.id,
+        'questionnaire': questionnaire,
         'question': question
     }
     return render(request, 'polls/question/update.html', context)

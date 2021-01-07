@@ -1,0 +1,35 @@
+{% extends 'polls/base.html' %}
+
+{% block polls %}
+<div class='row justify-content-center'>
+    <div class="col-6 ">
+        {% if not questionnaire.status %}
+        <form action="{% url 'share_questionnaire' id=questionnaire.id %}" method="POST" class='bg-white p-4 rounded shadow'>
+            {% csrf_token %}
+            <div class="form-group col-6 p-0">
+                <label for="exampleFormControlSelect1">Example select</label>
+                <select class="form-control" id="exampleFormControlSelect1" name="type">
+                  <option selected value="public">publiczna</option>
+                  <option value="private" >prywatna</option>
+                </select>
+            </div>
+            <p class='text-danger'>Po udostepnieniu ankiety nie będzie można jej edytować.</p>
+            <input type="submit" class='btn btn-warning py-3 px-4' value="Udostępnij">
+        </form>
+        {% else %}
+        <div class='bg-white p-4 rounded shadow'>
+            <p>ankieta została udostepniona</p>
+            <div >
+                <label for="url">Udostepnij ten link aby móc wypełnić ankiete.</label>
+                <div class='alert-primary text-primary p-2 rounded '>
+                <a id='url' class="" href="{% url 'display_questionnaire' questionnaire_code=questionnaire.code %}" >
+                    {{request.get_host}}/{{questionnaire.code}}
+                </a>
+            </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

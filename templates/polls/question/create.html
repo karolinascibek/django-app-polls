@@ -1,16 +1,16 @@
-{% extends 'base.html' %}
+{% extends 'polls/base.html' %}
 
-{% block content %}
+{% block polls %}
 <div id='app-create-question' class="row justify-content-center mt-4">
     <div class="col-6">
-        <form action="{% url 'create_question'  id=questionnaire_id %}" method="POST" class="bg-white p-3 rounded justify-content-start" >
+        <form action="{% url 'create_question'  id=questionnaire.id %}" method="POST" class="bg-white p-3 rounded justify-content-start" >
             {% csrf_token %}
             <div class="form-group px-3">
                 <input type="text" placeholder="Treść pytania" class="form-control" name="contents-question">
             </div>
             <div class="col-md-6 mb-3">
                 <label for="validationTooltip04">typ pytania</label>
-                <select class="custom-select" id="validationTooltip04" name='type' v-model="selected" required>
+                <select class="form-control" id="validationTooltip04" v-model="selected" name='type' required>
                     <option value="single-choice">jednokrotnego wyboru</option>
                     <option value="multiple-choice">wielokrotnego wyboru</option>
                     <option value="text">text</option>
@@ -28,7 +28,7 @@
                 <div class='btn btn-success py-2' v-on:click="addChoice">Dodaj opcje</div>
                 <div v-for="(choice, index) in choices" v-bind:key="choice">
                     <div class='d-flex py-1'>
-                        <input type="text" class='form-control' :placeholder="'opcja'+' '+index+': '+choice" :name="'contents-choice'">
+                        <input type="text" class='form-control' :placeholder="'opcja'+' '+(++index)" :name="'contents-choice'">
                         <i class="fas fa-times p-2 text-danger" v-on:click='deleteChoice(choice)'></i>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
             selected:'',
             counter: 0,
             choices: [],
-            numberChoices: 1,
+            numberChoices: 2,
         },
         methods: {
             addChoice(){

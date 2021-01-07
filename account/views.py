@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from mysite.settings import LOGIN_REDIRECT_URL, LOGIN_URL
@@ -8,6 +9,7 @@ from .models import MyUser
 
 from django.shortcuts import render, redirect, get_list_or_404
 from polls.questionnaire.models import Questionnaire
+from polls.respondents.models import Respondent
 
 
 # Create your views here.
@@ -15,8 +17,29 @@ from polls.questionnaire.models import Questionnaire
 
 def index(request):
     if request.user.is_authenticated:
-        questionnaires = Questionnaire.objects.filter(creator=request.user)
-        return render(request, 'account/dashboard.html', {'questionnaires': questionnaires})
+        if request.user.is_creator:
+            questionnaires = Questionnaire.objects.filter(creator=request.user)
+            return render(request, 'account/dashboard/creator.html', {'questionnaires': questionnaires})
+        else:
+            respondent = Respondent.objects.filter(user=request.user)
+            questionnaires = []
+            for r in respondent:
+                questionnaires.append(r.questionnaire)
+            context = {'questionnaires': questionnaires}
+            print(questionnaires)
+            # answers = []
+            # for q in questionnaires:
+            #     print(list(q.answer_set.all()))
+            #     answers.extend(list(q.answer_set.all()))
+            # print(answers)
+            # print("adpowiedzi -------")
+            # for a in answers:
+            #     try:
+            #         print(a.openanswer)
+            #     except ObjectDoesNotExist:
+            #         print(a.closedanswer_set.all())
+            #         print("There is no restaurant here.")
+            return render(request, 'account/dashboard/respondent.html', context)
     return render(request, 'base.html')
 
 
