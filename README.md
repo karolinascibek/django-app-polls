@@ -3,13 +3,15 @@
 ## Wymagania:
 - python 3.6.7
 - xampp lub uwamp
+- MySQL
 
 ## instalacja
+Otwórz w folderze głównym projektu terminal 
 ### Środowisko virtualne
 > python -m venv venv
-### aktywaowanie środowiska
+### Aktywowanie środowiska
 > venv\Scripts\activate
-### zainstaluj potrzebne paczki
+### Zainstaluj potrzebne paczki
 > python -m pip install -r requirements.txt
 
 # Uruchamianie
