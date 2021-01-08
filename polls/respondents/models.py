@@ -7,7 +7,7 @@ from polls.questionnaire.choice.models import Choice
 
 
 class Respondent(models.Model):
-    user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(MyUser, on_delete=models.CASCADE,  null=True)
     questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE)
 
 

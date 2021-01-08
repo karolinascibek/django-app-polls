@@ -35,7 +35,7 @@ def questionnaire_create_view(request):
 
 @login_required(login_url=LOGIN_URL)
 def questionnaire_detail_view(request, id):
-    questionnaire = get_object_or_404(Questionnaire, id=id)
+    questionnaire = get_object_or_404(Questionnaire, id=id , creator=request.user)
     questions = Question.objects.filter(questionnaire__id=id)
     context = {
         'questionnaire': questionnaire,
@@ -56,7 +56,7 @@ def questionnaire_delete_view(request, id):
 
 @login_required(login_url=LOGIN_URL)
 def questionnaire_update_view(request, id):
-    questionnaire = get_object_or_404(Questionnaire, id=id)
+    questionnaire = get_object_or_404(Questionnaire, id=id, creator=request.user)
     if request.method == 'POST':
         questionnaire.name = request.POST['name']
         questionnaire.save()
@@ -66,7 +66,7 @@ def questionnaire_update_view(request, id):
 
 @login_required(login_url=LOGIN_URL)
 def questionnaire_share_view(request, id):
-    questionnaire = get_object_or_404(Questionnaire, id=id)
+    questionnaire = get_object_or_404(Questionnaire, id=id,creator=request.user)
     context = {
         'questionnaire': questionnaire,
     }
@@ -97,7 +97,9 @@ def questionnaire_display_view(request, questionnaire_code):
     if request.method == "POST":
         respondent = None
         if request.user.is_authenticated:
-            respondent = Respondent.objects.create(user=request.user, questionnaire=questionnaire)
+            respondent = request.user
+
+        respondent = Respondent.objects.create(user=respondent, questionnaire=questionnaire)
         print(request.POST)
         dict = request.POST.copy()
         dict.pop("csrfmiddlewaretoken")

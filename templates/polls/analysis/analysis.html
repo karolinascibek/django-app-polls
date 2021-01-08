@@ -2,11 +2,38 @@
 
 {% block polls %}
 <div class="row justify-content-center">
-    <div class="col-7">
+    <div class="col-10 bg-white p-3 rounded shadow">
         {% if questionnaire.status %}
-        {{message}}
+        <div class="text-center">
+            <h4>Wyniki dla ankiety</h4>
+        </div>
+        <div class="py-2 px-3">
+            <h3>{{questionnaire.name}}</h3>
+            <p class="text-info">Liczba ankietowanych :
+                <span class="text-success font-weight-bold">{{respondents.questionnaire__count}}</span>
+            </p>
+        </div>
+
+        <table class="table ">
+            <thead>
+            <tr>
+                <th scope="col">pytanie</th>
+                <th scope="col">wybór</th>
+                <th scope="col">odpowiedziało</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for a in analysis %}
+            <tr>
+                <td>{{a.question__contents}}</td>
+                <td>{{a.contents}}</td>
+                <td> {{a.liczba}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
         {% else %}
-        <p>Aniekta nie jest udostepniona</p>
+        <p class="alert warning">Aniekta nie jest udostepniona</p>
         {% endif %}
     </div>
 </div>
