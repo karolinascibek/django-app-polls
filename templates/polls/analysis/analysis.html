@@ -1,0 +1,13 @@
+{% extends 'polls/base.html' %}
+
+{% block polls %}
+<div class="row justify-content-center">
+    <div class="col-7">
+        {% if questionnaire.status %}
+        {{message}}
+        {% else %}
+        <p>Aniekta nie jest udostepniona</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -5,7 +5,7 @@
 - xampp lub uwamp
 - MySQL
 
-## instalacja
+## Instalacja
 Otwórz w folderze głównym projektu terminal 
 ### Środowisko virtualne
 > python -m venv venv
@@ -14,7 +14,8 @@ Otwórz w folderze głównym projektu terminal
 ### Zainstaluj potrzebne paczki
 > python -m pip install -r requirements.txt
 
-# Uruchamianie
+## Uruchamianie
+Utwórz baze danych
 Ustaw parametry na swoją baze danych w pliku `mysite/settings` w zmiennej DATABASE
 
 Zrób migracje danych

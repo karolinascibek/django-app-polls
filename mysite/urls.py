@@ -22,6 +22,7 @@ from polls.questionnaire import api as polls_questionnaire_api
 from polls.questionnaire.question import views as polls_question_view, api as polls_question_api
 from polls.questionnaire.choice import api as polls_choice_api
 from polls.respondents.views import *
+from polls.analysis.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -51,7 +52,12 @@ urlpatterns = [
 
     # respondents view
     path('respondent/questionnaires', respondent_questionnaires, name='respondent_questionnaires'),
-    path('respondent/<id_questionnaire>', respondent_questionnaire, name='respondent_questionnaire'),
+    path('respondent/<int:id_questionnaire>', respondent_questionnaire, name='respondent_questionnaire'),
+
+    #analysis
+    path('analysis/<int:id>', analysis_view, name='analysis_questionnaire'),
+
+
 
     # API
     path('api/questionnaire/<int:id>',  polls_questionnaire_api.detail_questionnaire, name='detail_questionnaire_api'),

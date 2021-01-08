@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'polls.questionnaire',
     'polls.questionnaire.question',
     'polls.questionnaire.choice',
+    'polls.analysis',
     'polls.respondents',
 ]
 
