@@ -32,6 +32,18 @@
             {% endfor %}
             </tbody>
         </table>
+        <hr>
+        <div class="text-primary text-center"><h4>Pytania otwarte.</h4></div>
+        <div>
+            {% for q in analysis_open %}
+                <div class="pt-3 px-3 pb-2 "><h4>{{q.contents}}</h4></div>
+                {% for a in q.answer_set.all %}
+                    {% if a.openanswer.contents %}
+                    <div class="border p-2 mb-1"><p>{{a.openanswer.contents}}</p></div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
         {% else %}
         <p class="alert warning">Aniekta nie jest udostepniona</p>
         {% endif %}

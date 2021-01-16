@@ -38,33 +38,27 @@
                                   </div>
                                 {% endif %}
                             {% endfor %}
-                            {% if question.type == 'number' %}
-                            <div class="form-group">
-                                <input type="number" class="form-control"  placeholder="Wpisz liczbe">
-                            </div>
-                            {% elif question.type == 'text' %}
-                                <div class="form-group">
-                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                                </div>
-                            {% endif %}
+
                         </ul>
-                        <p>typ pytania to: {{question.type}} </p>
+                        <h6 class="text-success">Moja odpowiedzi :</h6>
                     </div>
+                    <div class="px-3">
                     {% for answer in question.answer_set.all %}
-                    <ul>
                        {% if answer.respondent.user.id == request.user.id %}
-                        <li>
-                            <ul>
-                                {% for a in answer.closedanswer_set.all %}
-                                <li>{{a.choice.contents}}</li>
-                                {% endfor %}
-                                {{answer.openanswer.contents}}
-                            </ul>
-                            
-                        </li>
+                            <div class="px-4 py-1">
+                            {% for a in answer.closedanswer_set.all %}
+                                <p> <i class="far fa-check-square text-success"></i> {{a.choice.contents}}</p>
+                            {% endfor %}
+                            </div>
+                            {% if answer.question.type == 'text' or answer.question.type == 'number'  %}
+                            <div class="form-group border rounded p-2">
+                                <p class="">{{answer.openanswer.contents}}</p>
+                            </div>
+                            {% endif %}
+
                         {% endif %}
-                    </ul>
                     {% endfor %}
+                    </div>
                 </div>
                 {% endfor %}
                

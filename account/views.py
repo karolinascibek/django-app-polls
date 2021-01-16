@@ -26,21 +26,10 @@ def index(request):
             for r in respondent:
                 questionnaires.append(r.questionnaire)
             context = {'questionnaires': questionnaires}
-            print(questionnaires)
-            # answers = []
-            # for q in questionnaires:
-            #     print(list(q.answer_set.all()))
-            #     answers.extend(list(q.answer_set.all()))
-            # print(answers)
-            # print("adpowiedzi -------")
-            # for a in answers:
-            #     try:
-            #         print(a.openanswer)
-            #     except ObjectDoesNotExist:
-            #         print(a.closedanswer_set.all())
-            #         print("There is no restaurant here.")
             return render(request, 'account/dashboard/respondent.html', context)
-    return render(request, 'base.html')
+    return render(request, 'polls/questionnaire/questionnaires.html',{
+        'questionnaires': Questionnaire.objects.filter(type='public', status=True)
+    })
 
 
 @login_required(login_url=LOGIN_URL)

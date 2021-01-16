@@ -106,3 +106,13 @@ def questionnaire_display_view(request, questionnaire_code):
         answers_save(respondent, questionnaire, dict)
         context = {"message": "Dziękujmey za wypełnienie ankiety. użtkownikowi = " + str(request.user) + " ankiety: " + str(questionnaire_code)}
         return render(request, "polls/respondent/questionnaire_sent.html", context)
+
+
+def questionnaires_view(request):
+    if request.user.is_authenticated:
+        print('user zalogowany')
+        questionnaires = Questionnaire.objects.filter(status=True)
+    else:
+        print('ankiety publiczne')
+        questionnaires = Questionnaire.objects.filter(type='public', status=True)
+    return render(request,'polls/questionnaire/questionnaires.html', {'questionnaires': questionnaires})
