@@ -116,3 +116,8 @@ def questionnaires_view(request):
         print('ankiety publiczne')
         questionnaires = Questionnaire.objects.filter(type='public', status=True)
     return render(request,'polls/questionnaire/questionnaires.html', {'questionnaires': questionnaires})
+
+
+def questionnaires_search_view(request):
+    return render(request, 'polls/questionnaire/questionnaires.html', {
+        'questionnaires': Questionnaire.objects.filter(type='public', status=True)})

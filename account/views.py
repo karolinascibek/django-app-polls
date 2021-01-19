@@ -27,10 +27,7 @@ def index(request):
                 questionnaires.append(r.questionnaire)
             context = {'questionnaires': questionnaires}
             return render(request, 'account/dashboard/respondent.html', context)
-    return render(request, 'polls/questionnaire/questionnaires.html',{
-        'questionnaires': Questionnaire.objects.filter(type='public', status=True)
-    })
-
+    return render(request, 'home.html')
 
 @login_required(login_url=LOGIN_URL)
 def profile_view(request):

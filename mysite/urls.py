@@ -43,6 +43,7 @@ urlpatterns = [
     path('questionnaire/<int:id>/delete', polls_questionnaire_view.questionnaire_delete_view, name='delete_questionnaire'),
     path('questionnaire/<int:id>/share',   polls_questionnaire_view.questionnaire_share_view, name='share_questionnaire'),
     path('questionnaires',   polls_questionnaire_view.questionnaires_view, name='questionnaires'),
+    path('questionnaires/search',   polls_questionnaire_view.questionnaires_search_view, name='questionnaires_search'),
     path('<str:questionnaire_code>',   polls_questionnaire_view.questionnaire_display_view, name='display_questionnaire'),
 
     path('questionnaire/<int:id>/new',        polls_question_view.question_create_view, name='create_question'),
