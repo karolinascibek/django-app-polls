@@ -47,8 +47,3 @@ def question_delete_view(request, id_question):
     question.delete()
     print('question delete view -----------')
     return redirect('detail_questionnaire', id=question.questionnaire.id)
-
-
-#
-# def open_question_update_view(request, id, id_question):
-#     return render(request, 'polls/question/open_question_update.html', {'questionnaire_id': id})

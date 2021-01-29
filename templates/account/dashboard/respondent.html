@@ -14,7 +14,6 @@
             <h4 class="">Wypełnione ankiety</h4>
         </div>
     <table class="table">
-        <caption>List ankiet</caption>
         <thead>
 
         </thead>
@@ -25,7 +24,9 @@
                 <td> <a href="{% url 'respondent_questionnaire' id_questionnaire=q.id %}">{{q.name}}</a></td>
             </tr>
             {% empty %}
-                <p>Nie masz jeszcze wypełnionych ankiet</p>
+            <div class="py-2 pt-3 alert-warning text-center rounded">
+                <p>Nie wypełniłeś żadnej ankiety!</p>
+            </div>
             {% endfor %}
         </tbody>
       </table>

@@ -1,4 +1,4 @@
-from django.db.models import Count, Q, Avg, StdDev
+from django.db.models import Count, Q, Avg, StdDev, Sum
 from django.forms import model_to_dict
 from django.shortcuts import render
 from polls.questionnaire.models import Questionnaire
@@ -21,15 +21,22 @@ def analysis_view(request, id):
     choices = Choice.objects.filter(question__questionnaire=questionnaire)
     analysis_choices = choices.annotate(liczba=Count('closedanswer__choice')).order_by('question__pk', 'closedanswer__choice')
     analysis_choices = analysis_choices.values('question__contents', 'contents', 'liczba', 'question__type')
-    analisis_open = Question.objects.filter(questionnaire=questionnaire)
-    analisis_open = analisis_open.filter(Q(type='text') | Q(type='number')).order_by('id')
-    print(analisis_open)
+
+    questions = Question.objects.filter(questionnaire=questionnaire)
+    questions_open_text = questions.filter(type='text').order_by('id')
+    column = 'answer__openanswer__contents'
+    questions_open_number = questions.filter(type='number')\
+        .annotate(avg=Avg(column))\
+        .annotate(sum=Sum(column))\
+        .annotate(stan_dev=StdDev(column)).order_by('id')
+
     context = {
         'message': "strona z analizą ankiety "+str(id),
         'questionnaire': questionnaire,
         'respondents': number_of_respondents,
         'analysis': analysis_choices,
-        'analysis_open': analisis_open,
+        'questions_open_text': questions_open_text,
+        'questions_open_number': questions_open_number,
 
         }
     return render(request, "polls/analysis/analysis.html", context)

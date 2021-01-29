@@ -7,7 +7,7 @@
         <form action="{% url 'share_questionnaire' id=questionnaire.id %}" method="POST" class='bg-white p-4 rounded shadow'>
             {% csrf_token %}
             <div class="form-group col-6 p-0">
-                <label for="exampleFormControlSelect1">Example select</label>
+                <label for="exampleFormControlSelect1">Wybierz poziom widoczności dla ankiety</label>
                 <select class="form-control" id="exampleFormControlSelect1" name="type">
                   <option selected value="public">publiczna</option>
                   <option value="private" >prywatna</option>

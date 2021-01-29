@@ -1,9 +1,11 @@
+from django.http import HttpResponse, FileResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from django.utils.crypto import get_random_string
+from reportlab.pdfgen import canvas
 
 from polls.questionnaire.models import Questionnaire
-from .forms import QuestionnaireForm
+from .forms import QuestionnaireForm, QuestionnaireUpdateForm
 from .my_function import answers_save
 from polls.questionnaire.question.models import Question
 from polls.respondents.models import Respondent, Answer, ClosedAnswer, OpenAnswer
@@ -11,6 +13,7 @@ from polls.respondents.models import Respondent, Answer, ClosedAnswer, OpenAnswe
 from django.contrib.auth.decorators import login_required
 from mysite.settings import LOGIN_URL
 
+import io
 import random
 
 # Create your views here.
@@ -57,11 +60,16 @@ def questionnaire_delete_view(request, id):
 @login_required(login_url=LOGIN_URL)
 def questionnaire_update_view(request, id):
     questionnaire = get_object_or_404(Questionnaire, id=id, creator=request.user)
+    context = {}
     if request.method == 'POST':
-        questionnaire.name = request.POST['name']
-        questionnaire.save()
-        return redirect('detail_questionnaire', id=id)
-    return render(request, 'polls/questionnaire/update.html', {'questionnaire': questionnaire})
+        form = QuestionnaireUpdateForm(request.POST, instance=questionnaire)
+        if form.is_valid():
+            form.save()
+            return redirect('detail_questionnaire', id=id)
+        else:
+            context['error'] = form.errors
+    context['questionnaire'] = questionnaire
+    return render(request, 'polls/questionnaire/update.html', context)
 
 
 @login_required(login_url=LOGIN_URL)
@@ -104,7 +112,7 @@ def questionnaire_display_view(request, questionnaire_code):
         dict = request.POST.copy()
         dict.pop("csrfmiddlewaretoken")
         answers_save(respondent, questionnaire, dict)
-        context = {"message": "Dziękujmey za wypełnienie ankiety. użtkownikowi = " + str(request.user) + " ankiety: " + str(questionnaire_code)}
+        context = {"message": "Dziękujmey za wypełnienie ankiety. "}
         return render(request, "polls/respondent/questionnaire_sent.html", context)
 
 
@@ -121,3 +129,5 @@ def questionnaires_view(request):
 def questionnaires_search_view(request):
     return render(request, 'polls/questionnaire/questionnaires.html', {
         'questionnaires': Questionnaire.objects.filter(type='public', status=True)})
+
+

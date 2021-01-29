@@ -14,7 +14,7 @@
             </p>
         </div>
 
-        <table class="table ">
+        <table class="table table-striped">
             <thead>
             <tr>
                 <th scope="col">pytanie</th>
@@ -25,9 +25,11 @@
             <tbody>
             {% for a in analysis %}
             <tr>
+                {% if not a.question__type == 'text' and not a.question__type == 'number' %}
                 <td>{{a.question__contents}}</td>
                 <td>{{a.contents}}</td>
                 <td> {{a.liczba}}</td>
+                {% endif %}
             </tr>
             {% endfor %}
             </tbody>
@@ -35,18 +37,52 @@
         <hr>
         <div class="text-primary text-center"><h4>Pytania otwarte.</h4></div>
         <div>
-            {% for q in analysis_open %}
+            <!-- open questions where type == text  -->
+            {% for q in questions_open_text %}
                 <div class="pt-3 px-3 pb-2 "><h4>{{q.contents}}</h4></div>
                 {% for a in q.answer_set.all %}
                     {% if a.openanswer.contents %}
                     <div class="border p-2 mb-1"><p>{{a.openanswer.contents}}</p></div>
                     {% endif %}
+                {% empty %}
+                    <div class="p-2 text-primary"> <p>Brak odpowiedzi</p></div>
                 {% endfor %}
+            {% endfor %}
+        </div>
+        <!-- open questions where type == number  -->
+        <div>
+            {% for q in questions_open_number %}
+                <div class="pt-3 px-3 pb-2 "><h4>{{q.contents}}</h4></div>
+                {% for a in q.answer_set.all %}
+                    {% if a.openanswer.contents %}
+                    <div class="border p-2 mb-1"><p>{{a.openanswer.contents}}</p></div>
+                    {% endif %}
+                {% empty %}
+                    <div class="p-2 text-primary"> <p>Brak odpowiedzi</p></div>
+                {% endfor %}
+            <!--  analysis for numerical data -->
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Suma</th>
+                        <th scope="col">Średnia</th>
+                        <th scope="col">Odch. Stand</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="table-warning">
+                        <td>{{q.sum}}</td>
+                        <td>{{q.avg}}</td>
+                        <td> {{q.stan_dev}}</td>
+                    </tr>
+                    </tbody>
+                </table>
             {% endfor %}
         </div>
         {% else %}
         <p class="alert warning">Aniekta nie jest udostepniona</p>
         {% endif %}
+
     </div>
 </div>
 {% endblock %}

@@ -2,11 +2,25 @@
 
 {% block content %}
 
-<div class="row justify-content-center mt-4">
-    <div class="col-7 pt-4 text-center">
-        <h4>Zobacz jakie nakiety można wypełnić!</h4>
-        <a class="btn btn-primary mt-4" href="{% url 'questionnaires_search' %}"> wypełnij ankiety</a>
-    </div>
+<div class="container">
+    <div class="row justify-content-center mt-4">
+        <div class="jumbotron bg-light">
+            <h1 class="display-4 text-center">Witaj! </h1>
+            <h2 class="lead">Twórz ankiety za darmo. </h2>
+            <h2 class="lead">Aplikacja <span class="text-info font-weight-bold">ANKIETA </span> oferuje:</h2>
+            <div>
+                <ul>
+                      <li> <h4 class="lead text-dark">Tworzenie formularzy,</h4></li>
+                      <li> <h4 class="lead text-dark">Analiza i gromadzanie danych,</h4></li>
+                      <li> <h4 class="lead text-dark">Wypełnianie ankiet.</h4></li>
+                </ul>
+            </div>
+            <p class="lead">Nie założyłeś jeszcze konta -> <a class="text-info" href="{% url 'register' %}">Zarejestruj się</a></p>
+            <hr class="my-4">
+            <p class="lead">Sprawdź dostępne ankiety do wypełnienia.</p>
+            <a class="btn btn-primary btn-lg" href="{% url 'questionnaires_search' %}"> wypełnij ankiety</a>
+        </div>
+</div>
 </div>
 
 {% endblock %}
