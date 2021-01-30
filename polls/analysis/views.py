@@ -18,9 +18,21 @@ from django.contrib.auth.decorators import login_required
 def analysis_view(request, id):
     questionnaire = get_object_or_404(Questionnaire, pk=id, creator=request.user)
     number_of_respondents = Respondent.objects.filter(questionnaire=questionnaire).aggregate(Count('questionnaire'))
+    number_of_respondents = number_of_respondents['questionnaire__count']
+
     choices = Choice.objects.filter(question__questionnaire=questionnaire)
-    analysis_choices = choices.annotate(liczba=Count('closedanswer__choice')).order_by('question__pk', 'closedanswer__choice')
-    analysis_choices = analysis_choices.values('question__contents', 'contents', 'liczba', 'question__type')
+
+    answers_choice = Count('closedanswer__choice')
+    analysis_choices = choices.annotate(liczba= answers_choice).annotate(proc=answers_choice/number_of_respondents*100)
+    analysis_choices = analysis_choices.order_by('question__pk', 'closedanswer__choice')
+    analysis_choices = analysis_choices.values('question__id', 'question__contents', 'id', 'contents',
+                                               'liczba', 'question__type', 'proc')
+
+    closed_questions = analysis_choices.values('question__id', 'question__contents').order_by('question__id').distinct()
+
+    for q in closed_questions:
+        a = analysis_choices.filter(question__id= q['question__id'])
+        q['choices'] = a
 
     questions = Question.objects.filter(questionnaire=questionnaire)
     questions_open_text = questions.filter(type='text').order_by('id')
@@ -37,6 +49,7 @@ def analysis_view(request, id):
         'analysis': analysis_choices,
         'questions_open_text': questions_open_text,
         'questions_open_number': questions_open_number,
+        'closed_questions': closed_questions
 
         }
     return render(request, "polls/analysis/analysis.html", context)

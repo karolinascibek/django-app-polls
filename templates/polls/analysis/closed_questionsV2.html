@@ -1,0 +1,22 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">pytanie</th>
+        <th scope="col">wybór</th>
+        <th scope="col">odpowiedziało</th>
+        <th scope="col">%</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for a in analysis %}
+    <tr>
+        {% if not a.question__type == 'text' and not a.question__type == 'number' %}
+        <td>{{a.question__contents}}</td>
+        <td>{{a.contents}}</td>
+        <td> {{a.liczba}}</td>
+        <td> {{a.proc}}</td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>

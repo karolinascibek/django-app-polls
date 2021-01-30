@@ -1,0 +1,22 @@
+<div>
+    <div class="px-4 ">
+        {% for q in closed_questions %}
+        <div class="row pt-3">
+            <div class="col-12"><h4>{{q.question__contents}}</h4></div>
+        </div>
+        {% for i in q.choices %}
+        <div class="row py-1">
+            <div class="col-6  p-0 pr-1">
+                <input class="form-control rounded-0" type="text" value="{{i.contents}}" readonly>
+            </div>
+            <div class="col-3  p-0 pr-1">
+                <input class="form-control rounded-0" type="text" value="{{i.liczba}} os." readonly>
+            </div>
+            <div class="col-3 p-0">
+                <input class="form-control rounded-0" type="text" value=" {{i.proc}}%" readonly>
+            </div>
+        </div>
+        {% endfor %}
+        {% endfor %}
+    </div>
+</div>

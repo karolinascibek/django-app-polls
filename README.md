@@ -1,21 +1,21 @@
 # django-app-polls
 
 ## Wymagania:
-- python 3.6.7
+- python 3.7.7
 - xampp lub uwamp
 - MySQL
 
 ## Instalacja
 Otwórz w folderze głównym projektu terminal 
-### Środowisko virtualne
+#### Środowisko virtualne
 > python -m venv venv
-### Aktywowanie środowiska
+#### Aktywowanie środowiska
 > venv\Scripts\activate
-### Zainstaluj potrzebne paczki
+#### Zainstaluj potrzebne paczki
 > python -m pip install -r requirements.txt
 
 ## Uruchamianie
-Utwórz baze danych
+Utwórz baze danych.
 Ustaw parametry na swoją baze danych w pliku `mysite/settings` w zmiennej DATABASE
 
 Zrób migracje danych
